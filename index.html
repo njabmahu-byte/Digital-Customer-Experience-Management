@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DCEM — Digital Customer Experience Management</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+  :root {
+    --bg-base: #0A0C12;
+    --bg-surface: #111520;
+    --bg-card: #161C2E;
+    --bg-elevated: #1D2640;
+    --accent-blue: #4D9EFF;
+    --accent-teal: #00C9A7;
+    --accent-gold: #FFB347;
+    --accent-purple: #8B7FE8;
+    --accent-red: #FF6B6B;
+    --text-primary: #E8EDF7;
+    --text-secondary: #8B96B0;
+    --text-muted: #4A5268;
+    --border: rgba(255,255,255,0.07);
+    --border-accent: rgba(77,158,255,0.25);
+    --vance-color: #00C9A7;
+    --chen-color: #4D9EFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    line-height: 1.75;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 240px;
+    background: var(--bg-surface);
+    border-right: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    overflow-y: auto;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-teal);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-section { margin-bottom: 1.5rem; }
+  .nav-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .nav-link {
+    display: block;
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    transition: all 0.15s;
+    margin-bottom: 2px;
+  }
+  .nav-link:hover { color: var(--text-primary); background: var(--bg-elevated); }
+
+  .main { margin-left: 240px; padding: 3rem 4rem 6rem; max-width: 900px; }
+
+  .doc-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .doc-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-teal);
+    background: rgba(0,201,167,0.1);
+    border: 1px solid rgba(0,201,167,0.2);
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 1rem;
+  }
+
+  .doc-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+  }
+
+  .doc-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+  }
+
+  .instructors {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .instructor-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    padding: 6px 14px;
+    font-size: 12px;
+  }
+
+  .instructor-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .stage-header {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent-gold);
+    border-radius: 0 12px 12px 0;
+    padding: 1.5rem 2rem;
+    margin: 3rem 0 2rem;
+  }
+
+  .stage-year {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    margin-bottom: 0.4rem;
+  }
+
+  .stage-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+  }
+
+  .stage-quote {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+
+  h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 2.5rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent-blue);
+    margin: 1.75rem 0 0.75rem;
+    letter-spacing: 0.01em;
+  }
+
+  p { margin-bottom: 1rem; color: var(--text-primary); }
+
+  .speaker {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.25rem 0;
+  }
+
+  .speaker-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .speaker-vance .speaker-avatar {
+    background: rgba(0,201,167,0.15);
+    color: var(--vance-color);
+    border: 1px solid rgba(0,201,167,0.3);
+  }
+
+  .speaker-chen .speaker-avatar {
+    background: rgba(77,158,255,0.15);
+    color: var(--chen-color);
+    border: 1px solid rgba(77,158,255,0.3);
+  }
+
+  .speaker-meta { flex: 1; }
+
+  .speaker-name {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .speaker-vance .speaker-name { color: var(--vance-color); }
+  .speaker-chen .speaker-name { color: var(--chen-color); }
+
+  .speaker-role {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  .speaker-content p { margin: 0; font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+  .speaker-content p + p { margin-top: 0.75rem; }
+
+  .callout {
+    background: var(--bg-card);
+    border-left: 3px solid var(--accent-gold);
+    border-radius: 0 10px 10px 0;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+
+  .callout strong { color: var(--accent-gold); }
+
+  .callout-teal { border-left-color: var(--accent-teal); }
+  .callout-teal strong { color: var(--accent-teal); }
+
+  .callout-blue { border-left-color: var(--accent-blue); }
+  .callout-blue strong { color: var(--accent-blue); }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0 1rem;
+  }
+
+  ul li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  ul li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0.55em;
+    width: 5px; height: 5px;
+    background: var(--accent-teal);
+    border-radius: 50%;
+    opacity: 0.7;
+  }
+
+  ul li strong { color: var(--text-primary); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 1.5rem;
+    font-size: 13px;
+  }
+
+  th {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    font-weight: 600;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--border-accent);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.015); }
+
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 1rem 0;
+  }
+
+  .metric-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+  }
+
+  .metric-name {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-teal);
+    margin-bottom: 4px;
+  }
+
+  .metric-full { font-size: 12px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+  .metric-bench { font-size: 13px; font-weight: 700; color: var(--accent-gold); margin-bottom: 6px; }
+  .metric-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .framework-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 1rem 0;
+  }
+
+  .pillar-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-top: 2px solid;
+    border-radius: 8px;
+    padding: 1rem 0.75rem;
+    text-align: center;
+  }
+
+  .pillar-num {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    margin-bottom: 6px;
+  }
+
+  .pillar-title { font-size: 12px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+  .pillar-desc { font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+
+  .journey-stages {
+    display: flex;
+    gap: 0;
+    margin: 1rem 0;
+    overflow-x: auto;
+  }
+
+  .journey-stage {
+    flex: 1;
+    min-width: 100px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 12px 10px;
+    text-align: center;
+    position: relative;
+  }
+
+  .journey-stage:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent-blue);
+    font-size: 12px;
+    z-index: 1;
+  }
+
+  .journey-stage:first-child { border-radius: 8px 0 0 8px; }
+  .journey-stage:last-child { border-radius: 0 8px 8px 0; }
+
+  .journey-num {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent-teal);
+    margin-bottom: 4px;
+  }
+
+  .journey-name { font-size: 11px; font-weight: 600; color: var(--text-primary); }
+
+  .scenario-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-accent);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin: 1.5rem 0;
+  }
+
+  .scenario-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent-purple);
+    margin-bottom: 0.75rem;
+  }
+
+  .scenario-text {
+    font-size: 14px;
+    color: var(--text-secondary);
+    font-style: italic;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  ol { padding-left: 1.25rem; margin: 0.75rem 0; }
+  ol li {
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+  ol li strong { color: var(--text-primary); }
+
+  .pitfall-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 1rem 0;
+  }
+
+  .pitfall-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem;
+  }
+
+  .pitfall-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--accent-red);
+    margin-bottom: 4px;
+  }
+
+  .pitfall-problem { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-bottom: 6px; }
+  .pitfall-fix { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+
+  .tools-stage {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+    margin-bottom: 10px;
+  }
+
+  .tools-year {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .tools-list { font-size: 13px; color: var(--text-secondary); }
+  .tools-list strong { color: var(--accent-blue); }
+
+  .page-section { margin-bottom: 3rem; }
+
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent-blue) 0%, transparent 80%);
+    margin: 3rem 0;
+    opacity: 0.3;
+  }
+
+  .next-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 1rem 0;
+  }
+
+  .next-step-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem;
+  }
+
+  .next-step-when {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-teal);
+    margin-bottom: 0.5rem;
+  }
+
+  .next-step-card ul li { font-size: 13px; }
+
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 2rem 1.5rem 4rem; }
+    .metric-grid { grid-template-columns: 1fr 1fr; }
+    .framework-grid { grid-template-columns: 1fr 1fr; }
+    .pitfall-grid { grid-template-columns: 1fr; }
+    .next-steps-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">DCEM Study Notes</div>
+  <div class="nav-section">
+    <div class="nav-label">Foundations</div>
+    <a class="nav-link" href="#year1">Year 1 — Foundations</a>
+    <a class="nav-link" href="#cx-ux">CX vs UX</a>
+    <a class="nav-link" href="#omnichannel">Omni-channel</a>
+    <a class="nav-link" href="#metrics">Core Metrics</a>
+    <a class="nav-link" href="#empathy">Empathy as Skill</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Intermediate</div>
+    <a class="nav-link" href="#year2">Years 2–4</a>
+    <a class="nav-link" href="#journey-map">Journey Mapping</a>
+    <a class="nav-link" href="#voc">Voice of Customer</a>
+    <a class="nav-link" href="#personalisation">Personalisation</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Senior Level</div>
+    <a class="nav-link" href="#year4">Years 4–7</a>
+    <a class="nav-link" href="#strategy">CX Strategy</a>
+    <a class="nav-link" href="#advanced-metrics">Advanced Metrics</a>
+    <a class="nav-link" href="#ai-cx">AI in CX</a>
+    <a class="nav-link" href="#culture">Culture & Change</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Reference</div>
+    <a class="nav-link" href="#frameworks">Frameworks</a>
+    <a class="nav-link" href="#pitfalls">Pitfalls</a>
+    <a class="nav-link" href="#tools">Tools</a>
+    <a class="nav-link" href="#scenario">Scenario</a>
+    <a class="nav-link" href="#nextsteps">Next Steps</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- HEADER -->
+  <header class="doc-header">
+    <div class="doc-badge">Digital Marketing Study Notes</div>
+    <div class="doc-title">Digital Customer<br>Experience Management</div>
+    <div class="doc-subtitle">From "what is CX?" to owning the full post-click strategy — absolute beginner to Senior Marketing Strategist</div>
+    <div class="instructors">
+      <div class="instructor-pill">
+        <div class="instructor-dot" style="background:var(--vance-color);"></div>
+        <span style="font-size:12px;color:var(--text-secondary);">Prof. Elena Vance — Academic, frameworks, psychology</span>
+      </div>
+      <div class="instructor-pill">
+        <div class="instructor-dot" style="background:var(--chen-color);"></div>
+        <span style="font-size:12px;color:var(--text-secondary);">Marcus Chen — Agency Partner, real-world execution</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- YEAR 1 -->
+  <div id="year1" class="page-section">
+    <div class="stage-header">
+      <div class="stage-year">Year 1</div>
+      <div class="stage-title">Foundations</div>
+      <div class="stage-quote">"Customer experience is not a department. It's the sum of every interaction a person has with your brand — before, during, and long after the purchase."</div>
+    </div>
+
+    <div class="speaker speaker-vance">
+      <div class="speaker-avatar">EV</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Professor Elena Vance</div>
+        <div class="speaker-role">Academic — Frameworks, psychological foundations</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>Most beginners make the same mistake: they confuse customer <em>service</em> with customer <em>experience</em>. Service is reactive — it's what happens when something goes wrong. Experience is everything — from the first ad a person sees, to how your website loads on their phone, to how a confirmation email makes them feel, to what happens if they need to return a product.</p>
+      <p>Digital Customer Experience Management is the <strong>deliberate design, measurement, and continuous improvement</strong> of every digital touchpoint your brand creates. At Year 1, you need four foundations: understanding CX versus UX, grasping the omni-channel reality, knowing your core metrics, and developing empathy as a professional skill.</p>
+    </div>
+
+    <!-- CX vs UX -->
+    <div id="cx-ux"></div>
+    <h2>1. CX vs. UX — Do Not Confuse Them</h2>
+
+    <table>
+      <thead>
+        <tr><th>Concept</th><th>Scope</th><th>Real Example</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color:var(--accent-blue)">User Experience (UX)</strong></td>
+          <td>Focuses on a specific product or interface — a website, app, or tool</td>
+          <td>How easy it is to find the Add to Cart button on your product page</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--accent-teal)">Customer Experience (CX)</strong></td>
+          <td>The entire relationship across all touchpoints, over time</td>
+          <td>How you feel about the brand after browsing, buying, receiving, and reaching support</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="speaker speaker-chen">
+      <div class="speaker-avatar">MC</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Marcus Chen</div>
+        <div class="speaker-role">Agency Partner & Ex-Head of Marketing</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>In agency work, I see smart marketers say "we fixed the UX" and assume CX is solved. It is not. You can have a flawless checkout flow — beautiful, fast, frictionless — and still destroy the customer experience if delivery is late, the packaging is damaged, and support takes three days to respond. CX owns the end-to-end feeling. UX is one chapter in that story.</p>
+    </div>
+
+    <!-- Omnichannel -->
+    <div id="omnichannel"></div>
+    <h2>2. Omni-channel vs. Multi-channel</h2>
+
+    <div class="speaker speaker-vance">
+      <div class="speaker-avatar">EV</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Professor Elena Vance</div>
+        <div class="speaker-role">Academic — Frameworks, psychological foundations</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>Multi-channel means the brand is present on many channels — email, social, website, store. But those channels operate independently and do not share information with each other.</p>
+      <p>Omni-channel means the experience is seamless and integrated. A customer can start browsing on their phone during a commute, continue on their laptop at home, and complete a purchase in store — and the brand recognises them at every step. The cart follows them. The preferences they set on one device carry over to another. The support agent can see what they browsed before calling.</p>
+    </div>
+
+    <div class="callout">
+      <strong>Why this matters for DCEM:</strong> Customers no longer think in channels — they think in tasks. If someone abandons a cart on mobile and then opens your email on their laptop, they expect the cart to still be waiting. If it is not, you have failed the experience regardless of how beautiful your individual channels are.
+    </div>
+
+    <div class="speaker speaker-chen">
+      <div class="speaker-avatar">MC</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Marcus Chen</div>
+        <div class="speaker-role">Agency Partner & Ex-Head of Marketing</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>The technical barrier to omni-channel is almost always data silos. Your email platform does not talk to your website analytics. Your CRM does not connect to your customer support tool. As a junior marketer you probably cannot fix that infrastructure directly. But you can identify the gaps, document them, and flag them to your manager with business impact attached. That is the kind of thinking that gets noticed early in a career.</p>
+    </div>
+
+    <!-- Metrics -->
+    <div id="metrics"></div>
+    <h2>3. The Three Core CX Metrics</h2>
+
+    <div class="speaker speaker-vance">
+      <div class="speaker-avatar">EV</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Professor Elena Vance</div>
+        <div class="speaker-role">Academic — Frameworks, psychological foundations</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>Memorise these. They are the vital signs of any customer experience programme, and they will come up in every role you hold from junior coordinator to CMO.</p>
+    </div>
+
+    <div class="metric-grid">
+      <div class="metric-card">
+        <div class="metric-name">CSAT</div>
+        <div class="metric-full">Customer Satisfaction Score</div>
+        <div class="metric-bench">80–85%</div>
+        <div class="metric-desc">"How satisfied were you with this interaction?" Measured on a 1–5 scale. Best for evaluating specific touchpoints like post-purchase or support resolution.</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">NPS</div>
+        <div class="metric-full">Net Promoter Score</div>
+        <div class="metric-bench">30–50 = Good</div>
+        <div class="metric-desc">"How likely are you to recommend us?" Scale 0–10. Promoters minus Detractors equals your NPS. Strategic indicator of brand loyalty and growth potential.</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">CES</div>
+        <div class="metric-full">Customer Effort Score</div>
+        <div class="metric-bench">Lower = Better</div>
+        <div class="metric-desc">"How easy was it to resolve your issue?" Measures friction. Research shows low-effort experiences drive loyalty more reliably than delight-focused approaches.</div>
+      </div>
+    </div>
+
+    <div class="speaker speaker-chen">
+      <div class="speaker-avatar">MC</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Marcus Chen</div>
+        <div class="speaker-role">Agency Partner & Ex-Head of Marketing</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>The most immediately useful for a junior marketer is CSAT — you can implement a simple post-purchase or post-support survey in days, and it gives you real feedback quickly. NPS is more strategic and better suited to senior-level reporting. CES is criminally underused despite being the strongest predictor of repurchase behaviour. Making things effortless is more valuable than making them delightful.</p>
+    </div>
+
+    <div class="callout callout-teal">
+      <strong>Key Research Finding:</strong> A customer who has a low-effort experience is 94% more likely to repurchase compared to one who had a high-effort experience. Delight is overrated. Reliability and ease win every time.
+    </div>
+
+    <!-- Empathy -->
+    <div id="empathy"></div>
+    <h2>4. Empathy as a Professional Skill</h2>
+
+    <div class="speaker speaker-vance">
+      <div class="speaker-avatar">EV</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Professor Elena Vance</div>
+        <div class="speaker-role">Academic — Frameworks, psychological foundations</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>You cannot manage what you do not observe. The most important Year 1 habit is walking the customer journey yourself — not as an employee who knows how the system works, but as a genuine customer encountering your brand for the first time. Sign up for your own brand's emails. Complete checkout on both phone and laptop. Submit a support ticket. Try to process a return. Navigate the website with your screen reader turned on.</p>
+    </div>
+
+    <div class="speaker speaker-chen">
+      <div class="speaker-avatar">MC</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Marcus Chen</div>
+        <div class="speaker-role">Agency Partner & Ex-Head of Marketing</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>Every junior marketer I hire completes this exercise on day one: go through the brand's full customer journey and write a one-page memo documenting every friction point you encounter. No solutions required — just observations. It is the fastest way to build genuine CX intuition, and it produces a document that is immediately useful to the team. The best junior marketers find things that everyone else has stopped noticing because they became too familiar with the system.</p>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- YEAR 2-4 -->
+  <div id="year2" class="page-section">
+    <div class="stage-header">
+      <div class="stage-year">Years 2–4</div>
+      <div class="stage-title">Intermediate</div>
+      <div class="stage-quote">"From observing the experience to actively designing and measuring it."</div>
+    </div>
+
+    <p style="color:var(--text-secondary);font-size:14px;">At this stage you own parts of the customer journey. You are building campaigns, running surveys, analysing feedback, and making recommendations that influence how the experience is designed.</p>
+
+    <!-- Journey Mapping -->
+    <div id="journey-map"></div>
+    <h2>1. Customer Journey Mapping — The Central Tool of DCEM</h2>
+
+    <div class="speaker speaker-vance">
+      <div class="speaker-avatar">EV</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Professor Elena Vance</div>
+        <div class="speaker-role">Academic — Frameworks, psychological foundations</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>A customer journey map is a visual representation of every stage a customer moves through in their relationship with your brand. Critically, it documents not just their actions but their thoughts, emotions, and pain points at each stage. It forces you to see the experience from outside the building rather than from inside it.</p>
+    </div>
+
+    <h3>The Seven Stages of a Digital Customer Journey</h3>
+
+    <div class="journey-stages">
+      <div class="journey-stage"><div class="journey-num">01</div><div class="journey-name">Awareness</div></div>
+      <div class="journey-stage"><div class="journey-num">02</div><div class="journey-name">Consideration</div></div>
+      <div class="journey-stage"><div class="journey-num">03</div><div class="journey-name">Conversion</div></div>
+      <div class="journey-stage"><div class="journey-num">04</div><div class="journey-name">Onboarding</div></div>
+      <div class="journey-stage"><div class="journey-num">05</div><div class="journey-name">Engagement</div></div>
+      <div class="journey-stage"><div class="journey-num">06</div><div class="journey-name">Support</div></div>
+      <div class="journey-stage"><div class="journey-num">07</div><div class="journey-name">Advocacy</div></div>
+    </div>
+
+    <h3>What to Document at Each Stage</h3>
+    <table>
+      <thead>
+        <tr><th>Dimension</th><th>Question to Answer</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Customer goal</strong></td><td>What does the customer want to achieve here?</td><td>Find a coffee shop open on Sunday morning near their location</td></tr>
+        <tr><td><strong>Touchpoints</strong></td><td>Where do they interact with the brand?</td><td>Google Search, Google Maps, Instagram, website, booking confirmation email</td></tr>
+        <tr><td><strong>Emotion</strong></td><td>What are they feeling — excited, frustrated, confused?</td><td>Frustrated that the website does not show real-time availability</td></tr>
+        <tr><td><strong>Friction</strong></td><td>What slows them down or causes them to leave?</td><td>Cannot find the menu without downloading a PDF</td></tr>
+        <tr><td><strong>Opportunity</strong></td><td>What specific improvement would reduce friction here?</td><td>Add an embedded menu with filtering by dietary requirement</td></tr>
+      </tbody>
+    </table>
+
+    <div class="speaker speaker-chen">
+      <div class="speaker-avatar">MC</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Marcus Chen</div>
+        <div class="speaker-role">Agency Partner & Ex-Head of Marketing</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>In practice, you do not need expensive software. A Miro board or a well-structured spreadsheet works perfectly. Start by mapping the journey for your single most profitable customer segment — not all customers, not a hypothetical average customer. Your most profitable segment. Map from first click to repeat purchase and identify every friction point you can find.</p>
+      <p>Here is a friction pattern I find on almost every e-commerce site I audit: a customer clicks a Facebook ad, lands on a product page, adds to cart, and then sees "free shipping on orders over R500" — but their cart is at R450. They either abandon or spend ten minutes searching for a discount code. Both outcomes are bad. A simple "Add R50 more to get free shipping" cross-sell prompt at that moment is a designed solution to a designed problem. That is DCEM thinking applied practically.</p>
+    </div>
+
+    <!-- VoC -->
+    <div id="voc"></div>
+    <h2>2. Voice of the Customer (VoC) Programmes</h2>
+
+    <div class="speaker speaker-vance">
+      <div class="speaker-avatar">EV</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Professor Elena Vance</div>
+        <div class="speaker-role">Academic — Frameworks, psychological foundations</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>VoC is the systematic process of collecting customer feedback, analysing it for patterns and themes, and — most critically — acting on it. At intermediate level you should be able to design and deploy post-purchase CSAT surveys, analyse open-ended responses using thematic coding, and close the loop with customers who reported negative experiences. Closing the loop means following up with detractors, acknowledging their feedback, and communicating what you did about it. It is one of the highest-ROI activities in customer retention.</p>
+    </div>
+
+    <div class="speaker speaker-chen">
+      <div class="speaker-avatar">MC</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Marcus Chen</div>
+        <div class="speaker-role">Agency Partner & Ex-Head of Marketing</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>Tools to learn: SurveyMonkey and Typeform for surveys, Hotjar for on-site feedback widgets and session recordings, and the built-in survey features inside Klaviyo or HubSpot if you are already using those platforms.</p>
+      <p>The mistake I see junior marketers make repeatedly: they collect feedback, package it into a slide deck, present it once, and nothing changes. A senior marketer treats feedback as an action queue. If 30 percent of respondents say checkout was slow, you escalate that to the engineering or IT team with the data attached. If they say product photography is unclear, you brief the creative team. Feedback without action is just vanity data.</p>
+    </div>
+
+    <!-- Personalisation -->
+    <div id="personalisation"></div>
+    <h2>3. Personalisation as a CX Lever</h2>
+
+    <div class="speaker speaker-vance">
+      <div class="speaker-avatar">EV</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Professor Elena Vance</div>
+        <div class="speaker-role">Academic — Frameworks, psychological foundations</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>Personalisation — delivering the right content to the right person at the right moment — is one of the most powerful levers in DCEM. But it exists on a spectrum. At intermediate level, your focus should be on the foundational applications: first-name personalisation in email, product recommendations based on browsing history, location-based content such as store finders, and ensuring return visitors are not shown identical popups or offers they have already seen and dismissed.</p>
+    </div>
+
+    <div class="speaker speaker-chen">
+      <div class="speaker-avatar">MC</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Marcus Chen</div>
+        <div class="speaker-role">Agency Partner & Ex-Head of Marketing</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>The danger at this level is what I call the creepy factor. If someone buys a wedding gift for a partner, do not serve them ads for that product for the next six months. Use frequency capping. Respect the context in which a purchase was made. Personalisation that feels intrusive erodes trust faster than no personalisation at all.</p>
+      <p>As a mid-level marketer, you also need to develop a clear understanding of your data architecture: what first-party and behavioural data you currently hold, what preference or purchase data you still need to collect, and what is legally and ethically permissible under GDPR and POPIA. Personalisation without data governance is a legal exposure risk.</p>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- YEAR 4-7 -->
+  <div id="year4" class="page-section">
+    <div class="stage-header">
+      <div class="stage-year">Years 4–7</div>
+      <div class="stage-title">Senior Strategist</div>
+      <div class="stage-quote">"Owning CX strategy, influencing product and operations, being the voice of the customer in rooms where decisions get made."</div>
+    </div>
+
+    <p style="color:var(--text-secondary);font-size:14px;">At this level you are not running surveys or building journey maps as execution tasks. You are setting the strategic vision for customer experience, aligning the organisation around that vision, and connecting CX performance to financial outcomes.</p>
+
+    <!-- CX Strategy -->
+    <div id="strategy"></div>
+    <h2>1. CX Strategy Framework</h2>
+
+    <div class="speaker speaker-vance">
+      <div class="speaker-avatar">EV</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Professor Elena Vance</div>
+        <div class="speaker-role">Academic — Frameworks, psychological foundations</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>A mature, senior-level CX strategy has five interdependent components. Weakness in any one limits the effectiveness of all the others.</p>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>#</th><th>Component</th><th>What It Involves</th></tr>
+      </thead>
+      <tbody>
+        <tr><td style="color:var(--accent-teal);font-weight:700;">01</td><td><strong>Customer Understanding</strong></td><td>Detailed personas based on real data, validated journey maps, ongoing VoC programme, qualitative research including customer interviews and usability testing</td></tr>
+        <tr><td style="color:var(--accent-teal);font-weight:700;">02</td><td><strong>Experience Design</strong></td><td>Service blueprints, content strategy aligned to journey stages, UX design standards, brand experience guidelines across all digital touchpoints</td></tr>
+        <tr><td style="color:var(--accent-teal);font-weight:700;">03</td><td><strong>Measurement & Analytics</strong></td><td>NPS and CSAT trends over time, churn analysis by segment, LTV analysis, attribution of CX improvements to revenue impact</td></tr>
+        <tr><td style="color:var(--accent-teal);font-weight:700;">04</td><td><strong>Governance</strong></td><td>Clear ownership of every touchpoint, prioritisation framework for improvements, cross-functional CX council, defined escalation paths</td></tr>
+        <tr><td style="color:var(--accent-teal);font-weight:700;">05</td><td><strong>Culture</strong></td><td>Customer obsession embedded in every department, CX-aligned KPIs across teams, leadership modelling customer-first behaviour</td></tr>
+      </tbody>
+    </table>
+
+    <div class="speaker speaker-chen">
+      <div class="speaker-avatar">MC</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Marcus Chen</div>
+        <div class="speaker-role">Agency Partner & Ex-Head of Marketing</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>The biggest gap I see in organisations at every size is governance. Marketing owns the website. Sales owns the CRM. Support owns the help desk. Product owns the app. But nobody owns the customer — nobody is accountable for the end-to-end experience that moves through all of those systems. Your job as a senior leader is either to create a dedicated CX role with cross-functional authority, or to position yourself as the person who forces alignment across those silos.</p>
+      <p>A practical move that costs nothing: create a CX council. A monthly meeting with stakeholders from marketing, sales, product, and customer support. Bring the three biggest friction points identified that month. Assign an owner to each one. Review progress the following month. That is real organisational change accomplished through leadership, not budget.</p>
+    </div>
+
+    <!-- Advanced Metrics -->
+    <div id="advanced-metrics"></div>
+    <h2>2. Advanced Metrics and Business Impact</h2>
+
+    <div class="speaker speaker-vance">
+      <div class="speaker-avatar">EV</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Professor Elena Vance</div>
+        <div class="speaker-role">Academic — Frameworks, psychological foundations</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>At senior level, you are expected to connect CX performance directly to financial outcomes. CSAT and NPS are internal indicators. The metrics that secure budget and earn strategic credibility are financial.</p>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Metric</th><th>Formula</th><th>CX Connection</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong style="color:var(--accent-blue)">Churn Rate</strong></td><td>Customers lost ÷ total customers in period</td><td>Poor CX is the primary driver of avoidable churn. Even a 1% reduction in churn has significant revenue impact.</td></tr>
+        <tr><td><strong style="color:var(--accent-blue)">Customer LTV</strong></td><td>Avg purchase value × purchase frequency × retention period</td><td>Every CX improvement that extends retention or increases purchase frequency directly increases LTV.</td></tr>
+        <tr><td><strong style="color:var(--accent-blue)">LTV:CAC Ratio</strong></td><td>Lifetime Value ÷ Customer Acquisition Cost</td><td>A healthy ratio is above 3:1. CX improvements that increase LTV without increasing acquisition spend improve this ratio.</td></tr>
+        <tr><td><strong style="color:var(--accent-blue)">Churn Reason Coding</strong></td><td>Qualitative analysis of exit survey responses</td><td>Identifies which specific CX failures are causing revenue loss and therefore which fixes have the highest ROI.</td></tr>
+        <tr><td><strong style="color:var(--accent-blue)">Resolution Rate</strong></td><td>Issues resolved on first contact ÷ total issues</td><td>Directly measures support CX quality. Low first-contact resolution is both a cost driver and a loyalty destroyer.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="speaker speaker-chen">
+      <div class="speaker-avatar">MC</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Marcus Chen</div>
+        <div class="speaker-role">Agency Partner & Ex-Head of Marketing</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>When presenting to the board, I never say "NPS dropped 10 points." I say: "Our NPS dropped 10 points, driven primarily by post-delivery friction. We have identified three specific interventions. If we implement all three, we project a 5 percent reduction in annual churn, which translates to approximately R2 million in retained recurring revenue. Here is the plan, the timeline, and the budget request." That is how CX strategy earns its seat at the executive table.</p>
+    </div>
+
+    <!-- AI in CX -->
+    <div id="ai-cx"></div>
+    <h2>3. AI and Digital CX — The New Reality</h2>
+
+    <div class="speaker speaker-vance">
+      <div class="speaker-avatar">EV</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Professor Elena Vance</div>
+        <div class="speaker-role">Academic — Frameworks, psychological foundations</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>Artificial intelligence is transforming digital CX across four distinct application areas simultaneously. Understanding each area — and its appropriate use case — is essential at senior level.</p>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>AI Application</th><th>What It Does</th><th>Real Example</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong style="color:var(--accent-teal)">Chatbots & Conversational AI</strong></td>
+          <td>Handle routine customer queries 24/7, triage complex issues to human agents</td>
+          <td>A banking chatbot that checks balances, resets PINs, and processes standard requests — escalating to human support only for complaints or complex issues</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--accent-teal)">Predictive Personalisation</strong></td>
+          <td>Anticipate customer needs before they articulate them, using behavioural and purchase data</td>
+          <td>Netflix surfacing content a user is statistically likely to watch next. Amazon's "customers also bought" recommendations generated at individual level.</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--accent-teal)">Sentiment Analysis</strong></td>
+          <td>Automatically detect frustration, anger, or distress in support tickets, social mentions, and reviews</td>
+          <td>Escalating a support ticket containing negative emotional language to a senior agent before the situation deteriorates further</td>
+        </tr>
+        <tr>
+          <td><strong style="color:var(--accent-teal)">Journey Orchestration</strong></td>
+          <td>AI determines the optimal message, channel, and timing for each individual customer in real time</td>
+          <td>Deciding whether to send a push notification versus an email based on an individual's predicted open rate for each channel at a specific time of day</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="speaker speaker-chen">
+      <div class="speaker-avatar">MC</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Marcus Chen</div>
+        <div class="speaker-role">Agency Partner & Ex-Head of Marketing</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>The principle I use when advising clients: use AI for efficiency — routing, triage, recommendations, automation — and use humans for complex emotion — complaints, loyalty recovery, high-value relationship management. The most successful CX programmes are not the most automated ones. They are the ones that have intelligently decided where automation improves the experience and where it diminishes it.</p>
+      <p>Your job as a senior strategist is to make that distinction clearly and defend it. That judgment — where to automate and where to preserve human connection — is precisely what AI cannot replace about your role.</p>
+    </div>
+
+    <!-- Culture -->
+    <div id="culture"></div>
+    <h2>4. Organisational Culture and Change Management</h2>
+
+    <div class="speaker speaker-vance">
+      <div class="speaker-avatar">EV</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Professor Elena Vance</div>
+        <div class="speaker-role">Academic — Frameworks, psychological foundations</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>The hardest part of CX transformation is not tools, metrics, or technology. It is getting every person in the organisation — from the CEO to the warehouse team — to genuinely care about the customer experience they are contributing to. This requires changing not just behaviours but incentive structures, and that is where most CX initiatives fail.</p>
+    </div>
+
+    <div class="speaker speaker-chen">
+      <div class="speaker-avatar">MC</div>
+      <div class="speaker-meta">
+        <div class="speaker-name">Marcus Chen</div>
+        <div class="speaker-role">Agency Partner & Ex-Head of Marketing</div>
+      </div>
+    </div>
+    <div class="speaker-content">
+      <p>I have watched brilliant CX strategies die because the incentives were misaligned across departments. The call centre was measured on average handle time — so agents rushed customers. The product team was measured on features shipped — so they released untested functionality. Marketing was measured on leads generated — so they over-promised and created expectations the product could not meet.</p>
+      <p>As a senior leader, your most powerful lever is changing those incentives. Advocate for CX-aligned KPIs across every team that touches the customer. And use qualitative evidence in executive meetings — bring a two-minute recording of a frustrated customer and play it at the start of the presentation. Numbers tell, but real customer voices change minds.</p>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- FRAMEWORKS -->
+  <div id="frameworks" class="page-section">
+    <h2 style="border-bottom:1px solid var(--border-accent);margin-top:0;">Key Frameworks and Mental Models</h2>
+
+    <h3>The Five Pillars of Digital CX</h3>
+
+    <div class="framework-grid">
+      <div class="pillar-card" style="border-top-color:var(--accent-teal);">
+        <div class="pillar-num" style="color:var(--accent-teal);">01</div>
+        <div class="pillar-title">Reliability</div>
+        <div class="pillar-desc">Does it work every time, without exception?</div>
+      </div>
+      <div class="pillar-card" style="border-top-color:var(--accent-blue);">
+        <div class="pillar-num" style="color:var(--accent-blue);">02</div>
+        <div class="pillar-title">Ease</div>
+        <div class="pillar-desc">Is it low effort at every stage?</div>
+      </div>
+      <div class="pillar-card" style="border-top-color:var(--accent-gold);">
+        <div class="pillar-num" style="color:var(--accent-gold);">03</div>
+        <div class="pillar-title">Speed</div>
+        <div class="pillar-desc">Does it respect the customer's time?</div>
+      </div>
+      <div class="pillar-card" style="border-top-color:var(--accent-purple);">
+        <div class="pillar-num" style="color:var(--accent-purple);">04</div>
+        <div class="pillar-title">Personalisation</div>
+        <div class="pillar-desc">Does it feel like it knows who I am?</div>
+      </div>
+      <div class="pillar-card" style="border-top-color:var(--accent-red);">
+        <div class="pillar-num" style="color:var(--accent-red);">05</div>
+        <div class="pillar-title">Empathy</div>
+        <div class="pillar-desc">Do you care when something goes wrong?</div>
+      </div>
+    </div>
+
+    <h3>The Service Profit Chain (Harvard Business Review)</h3>
+    <div class="callout callout-blue">
+      <strong>Internal quality</strong> (employee tools, training, environment) → <strong>Employee satisfaction</strong> → <strong>Employee retention & productivity</strong> → <strong>Customer satisfaction</strong> → <strong>Customer loyalty</strong> → <strong>Revenue growth and profitability</strong>
+      <p style="margin-top:0.75rem;font-size:13px;">The critical implication: if you mistreat your support team, customer experience will suffer. CX is not only about the customer — it is about the people who serve them. Companies that invest in employee experience consistently outperform on customer experience metrics.</p>
+    </div>
+
+    <h3>The Moments of Truth</h3>
+    <table>
+      <thead>
+        <tr><th>Moment</th><th>When It Happens</th><th>DCEM Responsibility</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong style="color:var(--accent-teal)">ZMOT — Zero Moment</strong></td><td>Customer researches before buying — Google, reviews, social media, comparison sites</td><td>SEO, content strategy, reputation management, review generation</td></tr>
+        <tr><td><strong style="color:var(--accent-blue)">FMOT — First Moment</strong></td><td>Customer encounters your product on a digital shelf — website, app store, ad</td><td>UX design, product photography, pricing presentation, landing pages</td></tr>
+        <tr><td><strong style="color:var(--accent-gold)">SMOT — Second Moment</strong></td><td>Customer uses the product and experiences your brand promise in practice</td><td>Onboarding experience, product quality, delivery experience, packaging</td></tr>
+        <tr><td><strong style="color:var(--accent-purple)">TMOT — Third Moment</strong></td><td>Customer shares their experience publicly — reviews, social posts, word of mouth</td><td>Review request strategy, social listening, advocacy programme, referral mechanics</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- PITFALLS -->
+  <div id="pitfalls" class="page-section">
+    <h2 style="border-bottom:1px solid var(--border-accent);margin-top:0;">Common Pitfalls and How to Avoid Them</h2>
+
+    <div class="pitfall-grid">
+      <div class="pitfall-card">
+        <div class="pitfall-label">Pitfall 01</div>
+        <div class="pitfall-problem">Measuring only post-purchase satisfaction</div>
+        <div class="pitfall-fix">This creates survivorship bias — you only hear from customers who completed a purchase. Survey customers who abandoned, churned, or never converted. Their feedback is often more valuable.</div>
+      </div>
+      <div class="pitfall-card">
+        <div class="pitfall-label">Pitfall 02</div>
+        <div class="pitfall-problem">Focusing only on digital, ignoring human touchpoints</div>
+        <div class="pitfall-fix">Map every channel where customers interact with your brand — phone calls, live chat, in-store if applicable. The most damaging experiences often happen at human touchpoints, not digital ones.</div>
+      </div>
+      <div class="pitfall-card">
+        <div class="pitfall-label">Pitfall 03</div>
+        <div class="pitfall-problem">Collecting vanity metrics without action</div>
+        <div class="pitfall-fix">Always ask "so what?" after every metric. 500 survey responses means nothing if no action was taken. Tie every measurement to a decision or a change that was made as a result.</div>
+      </div>
+      <div class="pitfall-card">
+        <div class="pitfall-label">Pitfall 04</div>
+        <div class="pitfall-problem">Siloed optimisation — fixing one touchpoint, breaking another</div>
+        <div class="pitfall-fix">Always evaluate changes in the context of the full journey. Improving checkout speed by removing trust signals might increase conversion but reduce satisfaction. Map the downstream effects.</div>
+      </div>
+      <div class="pitfall-card">
+        <div class="pitfall-label">Pitfall 05</div>
+        <div class="pitfall-problem">Ignoring emotional drivers in journey maps</div>
+        <div class="pitfall-fix">People make decisions for emotional reasons and justify them rationally. If your journey map only documents functional steps and not emotional states, it is missing the most important data.</div>
+      </div>
+      <div class="pitfall-card">
+        <div class="pitfall-label">Pitfall 06</div>
+        <div class="pitfall-problem">Over-automating emotional moments</div>
+        <div class="pitfall-fix">Not every touchpoint should be automated. A customer lodging a serious complaint does not want a chatbot. Define clearly which moments require genuine human empathy and protect those touchpoints from automation pressure.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- TOOLS -->
+  <div id="tools" class="page-section">
+    <h2 style="border-bottom:1px solid var(--border-accent);margin-top:0;">Tools to Master — By Career Stage</h2>
+
+    <div class="tools-stage">
+      <div class="tools-year">Year 1 — Foundations</div>
+      <div class="tools-list"><strong>Hotjar / Microsoft Clarity</strong> — session recordings and heatmaps that show you exactly where users struggle on your website &nbsp;|&nbsp; <strong>SurveyMonkey</strong> — basic CSAT survey setup and analysis &nbsp;|&nbsp; <strong>Google Analytics 4</strong> — understanding user behaviour flows and drop-off points in the customer journey</div>
+    </div>
+
+    <div class="tools-stage">
+      <div class="tools-year">Years 2–4 — Intermediate</div>
+      <div class="tools-list"><strong>Typeform</strong> — beautiful, high-completion survey design &nbsp;|&nbsp; <strong>Qualtrics</strong> — enterprise-grade VoC and experience management platform &nbsp;|&nbsp; <strong>HubSpot CRM</strong> — customer ticket tracking and journey visibility &nbsp;|&nbsp; <strong>Miro</strong> — collaborative journey mapping and service blueprint creation &nbsp;|&nbsp; <strong>Klaviyo</strong> — behavioural data and personalisation at mid-market scale</div>
+    </div>
+
+    <div class="tools-stage">
+      <div class="tools-year">Years 4–7 — Senior Strategist</div>
+      <div class="tools-list"><strong>Segment / mParticle</strong> — Customer Data Platforms for unified customer profiles &nbsp;|&nbsp; <strong>Salesforce Interaction Studio</strong> — AI-driven journey orchestration &nbsp;|&nbsp; <strong>Optimizely</strong> — experience optimisation and A/B testing at scale &nbsp;|&nbsp; <strong>Sprout Social / Brand24</strong> — social listening and sentiment analysis across the web &nbsp;|&nbsp; <strong>Medallia / Qualtrics XM</strong> — enterprise CX programme management and closed-loop feedback</div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- SCENARIO -->
+  <div id="scenario" class="page-section">
+    <h2 style="border-bottom:1px solid var(--border-accent);margin-top:0;">Scenario — Test Yourself</h2>
+
+    <div class="scenario-box">
+      <div class="scenario-label">Case Study Brief</div>
+      <div class="scenario-text">You are the Digital CX Manager for an online fashion retailer. Returns have increased by 25 percent over the past six months. Customer support tickets citing "the size does not fit" are up 40 percent. NPS has dropped from 52 to 38. The CEO wants a diagnosis and a plan within one week. You have access to analytics, survey data, support ticket logs, and the product team.</div>
+    </div>
+
+    <h3>Questions to Answer — Think Like a Senior Strategist</h3>
+    <ol>
+      <li><strong>Data diagnosis:</strong> What specific data would you pull first? Where would you look — analytics, support tickets, survey responses, product reviews — and what patterns would you be looking for in each?</li>
+      <li><strong>Three hypotheses:</strong> Identify three distinct root causes that could explain the simultaneous increase in returns and drop in NPS. Go beyond "customers are pickier" — think systematically about the product, the content, the sizing information, and the expectations set by marketing.</li>
+      <li><strong>Short-term interventions:</strong> What three actions could you implement within two weeks that would reduce the friction without requiring significant engineering or product changes?</li>
+      <li><strong>Long-term strategy:</strong> What structural changes would you recommend to prevent this pattern from recurring? Consider product photography, sizing guides, content, post-purchase communication, and returns experience design.</li>
+      <li><strong>Executive communication:</strong> How would you present your findings and plan to the CEO? What format, what level of detail, and how would you frame the business case for the resources you need?</li>
+    </ol>
+
+    <div class="callout callout-teal">
+      <strong>Ready to check your thinking?</strong> Ask your professor for the model answer when you are confident in your response. A strong answer at senior level will include financial quantification of the problem, a structured prioritisation of interventions by impact and effort, and a clear narrative that connects the fix to business outcomes.
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- NEXT STEPS -->
+  <div id="nextsteps" class="page-section">
+    <h2 style="border-bottom:1px solid var(--border-accent);margin-top:0;">Your Next Steps</h2>
+
+    <div class="next-steps-grid">
+      <div class="next-step-card">
+        <div class="next-step-when">Today</div>
+        <ul>
+          <li>Create a dedicated study folder for DCEM. This document is your base.</li>
+          <li>Pick one brand you use regularly and walk their full digital customer journey as a genuine customer. Write a one-page friction memo.</li>
+        </ul>
+      </div>
+      <div class="next-step-card">
+        <div class="next-step-when">This Week</div>
+        <ul>
+          <li>Map the journey for ordering via Mr D or Uber Eats. Identify every friction point from search to delivery. Apply the five DCEM stages.</li>
+          <li>Install Hotjar or Microsoft Clarity on any website you manage. Watch five session recordings and identify the patterns.</li>
+        </ul>
+      </div>
+      <div class="next-step-card">
+        <div class="next-step-when">Within Two Weeks</div>
+        <ul>
+          <li>Set up a simple post-purchase CSAT survey using Typeform or Google Forms for a mock or real project. Analyse the first responses for themes.</li>
+          <li>Read the Wikipedia summary of the Service Profit Chain. Understand its implications for how you think about employee and customer experience together.</li>
+        </ul>
+      </div>
+      <div class="next-step-card">
+        <div class="next-step-when">Ongoing</div>
+        <ul>
+          <li>Subscribe to CX thought leaders: Esteban Kolsky, Jeanne Bliss, and Shep Hyken. Follow them on LinkedIn.</li>
+          <li>Add "The Effortless Experience" by Matthew Dixon to your reading list — it is the definitive book on effort reduction as a CX strategy.</li>
+          <li>Connect every other marketing discipline you study back to CX: how does email support the post-purchase stage? How does SEO influence ZMOT?</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem;padding:1.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;">
+      <div class="speaker-vance" style="font-size:13px;color:var(--vance-color);font-weight:600;margin-bottom:0.5rem;">Professor Elena Vance</div>
+      <p style="font-size:14px;color:var(--text-secondary);margin:0;font-style:italic;">Customer experience is not a project with a completion date. It is a perpetual cycle of listening, understanding, designing, measuring, and listening again. The organisations that win on CX are those that never believe they have finished.</p>
+    </div>
+
+    <div style="margin-top:12px;padding:1.5rem;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;">
+      <div class="speaker-chen" style="font-size:13px;color:var(--chen-color);font-weight:600;margin-bottom:0.5rem;">Marcus Chen</div>
+      <p style="font-size:14px;color:var(--text-secondary);margin:0;font-style:italic;">When you are a senior strategist, your most important job is to be the voice of the customer in every room where decisions get made about budgets, product roadmaps, pricing, and policy. When you do that well — when you can make the customer's experience real and consequential to people who never interact with customers directly — you become genuinely indispensable.</p>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>
